@@ -1,0 +1,39 @@
+prefer-no-csd		// Refuse any client side decoration
+
+window-rule {
+    // This app-id regular expression will work for both:
+    // - host Firefox (app-id is "firefox")
+    // - Flatpak Firefox (app-id is "org.mozilla.firefox")
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id=r#"zen$"# title="^Picture-in-Picture$"
+    open-floating true
+	// Anchor to the top edge of the screen.
+    default-floating-position x=20 y=20 relative-to="bottom-right"
+    // Half of the screen high.
+    default-window-height { proportion 0.5; }
+    // 80% of the screen wide.
+    default-column-width { proportion 0.4; }
+}
+
+// To exclude windows from screen capture
+/-window-rule {
+    match app-id=r#"^org\.keepassxc\.KeePassXC$"#
+    match app-id=r#"^org\.gnome\.World\.Secrets$"#
+
+    block-out-from "screen-capture"
+
+    // Use this instead if you want them visible on third-party screenshot tools.
+    // block-out-from "screencast"
+}
+
+// Rounded cornors for all windows
+window-rule {
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+
+// Noctalia shell is not able to set wallpaper if this is not false
+layer-rule {
+	match namespace="^noctalia-wallpaper*"
+	place-within-backdrop false
+}

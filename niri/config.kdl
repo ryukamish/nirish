@@ -1,0 +1,8 @@
+include "cfg/autostart.kdl"
+include "cfg/input.kdl"
+include "cfg/keybinds.kdl"
+include "cfg/layout.kdl"
+include "cfg/looknfeel.kdl"
+include "cfg/misc.kdl"
+include "cfg/monitor.kdl"
+include "cfg/window-rules.kdl"

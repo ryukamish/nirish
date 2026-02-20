@@ -1,0 +1,5 @@
+spawn-at-startup "qs" "-c" "noctalia-shell" "--no-duplicate"
+hotkey-overlay {
+	// Disables the "Important Hotkeys" pop-up at startup
+	skip-at-startup
+}
