@@ -9,10 +9,10 @@ binds {
 	// ----------- DMS shell keybinds ------------
 	ALT+Space hotkey-overlay-title="Run an Application: DMS launcher" { spawn-sh "dms ipc call launcher toggle"; }
 	// Require `cliphist` package
-	Mod+Alt+V hotkey-overlay-title="Clipboard: DMS clipboard" { spawn-sh "dms ipc call launcher clipboard"; }
+	Mod+V hotkey-overlay-title="Clipboard: DMS clipboard" { spawn-sh "dms ipc call clipboard toggle"; }
 	Mod+P hotkey-overlay-title="Session manager: DMS session" { spawn-sh "dms ipc call powermenu toggle"; }
 	Mod+Period hotkey-overlay-title="Session manager: DMS emoji" { spawn-sh "dms ipc call spotlight toggleQuery ':e'"; }
-	// Mod+W hotkey-overlay-title="Wallpaper Selector: DMS wallpaper" { spawn-sh "dms ipc call wallpaper toggle"; }
+	Mod+W hotkey-overlay-title="Wallpaper Selector: DMS wallpaper" { spawn-sh "dms ipc call file browse wallpaper"; }
 
     // "-l 1.0" limits the volume to 100%.
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1.0"; }
