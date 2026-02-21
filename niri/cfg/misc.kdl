@@ -1,2 +1,24 @@
-
+// Disable client side decoration
+prefer-no-csd
+// Path to screenshot directory
 screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+// Environment variables
+environment {
+	// QT application theme
+	QT_QPA_PLATFORMTHEME "qt6ct"
+	QT_QPA_PLATFORM "wayland"
+}
+
+// Avoid popup for important keybinds
+hotkey-overlay {
+    skip-at-startup
+}
+
+cursor {
+	xcursor-theme "Bibata-Modern-Ice"
+	xcursor-size 24
+
+	hide-when-typing
+	hide-after-inactive-ms 1000
+}
