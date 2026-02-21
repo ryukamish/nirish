@@ -6,6 +6,7 @@ input {
     }
 
     touchpad {
+		dwt				// palm rejection while typing
         tap
         natural-scroll
     }
