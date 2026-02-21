@@ -6,3 +6,6 @@ include "cfg/looknfeel.kdl"
 include "cfg/misc.kdl"
 include "cfg/monitor.kdl"
 include "cfg/window-rules.kdl"
+
+include "./noctalia.kdl"
+
