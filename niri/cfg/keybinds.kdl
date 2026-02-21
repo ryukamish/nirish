@@ -21,7 +21,7 @@ binds {
 	Mod+P hotkey-overlay-title="Session manager: noctalia session" { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
 	Mod+Period hotkey-overlay-title="Session manager: noctalia session" { spawn-sh "qs -c noctalia-shell ipc call launcher emoji"; }
 	Mod+W hotkey-overlay-title="Wallpaper Selector: noctalia wallpaper" { spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: noctalia lock" { spawn-sh "dms ipc call lockScreen lock"; }
+    Super+Alt+L hotkey-overlay-title="Lock the Screen: noctalia lock" { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
 
     // "-l 1.0" limits the volume to 100%.
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1.0"; }
