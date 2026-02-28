@@ -16,8 +16,8 @@ hotkey-overlay {
 }
 
 cursor {
-	xcursor-theme "Banana"
-	xcursor-size 34
+	// xcursor-theme "Banana"
+	// xcursor-size 34
 
 	hide-when-typing
 	hide-after-inactive-ms 1000
