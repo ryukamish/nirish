@@ -22,3 +22,10 @@ cursor {
 	hide-when-typing
 	hide-after-inactive-ms 1000
 }
+
+// Lock the screen when laptop lid is closed
+switch-events {
+    lid-close {
+        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock"
+    }
+}

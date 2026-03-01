@@ -1,10 +1,10 @@
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
-    Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     // ALT+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Mod+E hotkey-overlay-title="File manager: nautilus" { spawn "nautilus"; }
-    Mod+B hotkey-overlay-title="Browser: zen" { spawn "zen-browser"; }
+    Mod+B hotkey-overlay-title="Browser: zen browser" { spawn "zen-browser"; }
 
 	// ----------- DMS shell keybinds ------------
 	// ALT+Space hotkey-overlay-title="Run an Application: DMS launcher" { spawn-sh "dms ipc call launcher toggle"; }
