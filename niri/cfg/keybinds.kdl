@@ -4,7 +4,8 @@ binds {
     Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
     // ALT+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
     Mod+E hotkey-overlay-title="File manager: nautilus" { spawn "nautilus"; }
-    Mod+B hotkey-overlay-title="Browser: zen browser" { spawn "zen-browser"; }
+    Mod+B hotkey-overlay-title="Browser: brave" { spawn "brave"; }
+    Mod+Shift+B hotkey-overlay-title="Browser: brave ( private )" { spawn "brave" "--incognito"; }
 
 	// ----------- DMS shell keybinds ------------
 	// ALT+Space hotkey-overlay-title="Run an Application: DMS launcher" { spawn-sh "dms ipc call launcher toggle"; }
@@ -17,7 +18,7 @@ binds {
 	// ----------- Noctalia shell keybinds ------------
 	ALT+Space hotkey-overlay-title="Run an Application: noctalia launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
 	// Require `cliphist` package
-	Mod+Alt+V hotkey-overlay-title="Clipboard: noctalia clipboard" { spawn-sh "qs -c noctalia-shell ipc call launcher clipboard"; }
+	Mod+V hotkey-overlay-title="Clipboard: noctalia clipboard" { spawn-sh "qs -c noctalia-shell ipc call launcher clipboard"; }
 	Mod+P hotkey-overlay-title="Session manager: noctalia session" { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
 	Mod+Period hotkey-overlay-title="Session manager: noctalia session" { spawn-sh "qs -c noctalia-shell ipc call launcher emoji"; }
 	Mod+W hotkey-overlay-title="Wallpaper Selector: noctalia wallpaper" { spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }
