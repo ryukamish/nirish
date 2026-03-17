@@ -7,7 +7,7 @@
 		"niri/workspaces",
 		"custom/uptime",
 		"backlight",
-		"group/network",
+		"group/network"
 	],
 	"modules-center": [],
 	"modules-right": [
