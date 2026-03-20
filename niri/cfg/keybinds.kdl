@@ -1,42 +1,24 @@
 binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
-    Mod+Return hotkey-overlay-title="Open a Terminal: alacritty" { spawn "alacritty"; }
-    // ALT+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
-    Mod+E hotkey-overlay-title="File manager: nautilus" { spawn "nautilus"; }
-    Mod+B hotkey-overlay-title="Browser: brave" { spawn "brave"; }
-    Mod+Shift+B hotkey-overlay-title="Browser: brave ( private )" { spawn "brave" "--incognito"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
+    Mod+E hotkey-overlay-title="File manager: pcmanfm" { spawn "pcmanfm"; }
+    Mod+B hotkey-overlay-title="Browser: librewolf" { spawn "librewolf"; }
+    Mod+Shift+B hotkey-overlay-title="Browser: librewolf ( private )" { spawn "librewolf" "--private"; }
 
-	// ----------- DMS shell keybinds ------------
-	// ALT+Space hotkey-overlay-title="Run an Application: DMS launcher" { spawn-sh "dms ipc call launcher toggle"; }
-	// Mod+V hotkey-overlay-title="Clipboard: DMS clipboard" { spawn-sh "dms ipc call clipboard toggle"; }
-	// Mod+P hotkey-overlay-title="Session manager: DMS session" { spawn-sh "dms ipc call powermenu toggle"; }
-	// Mod+Period hotkey-overlay-title="Session manager: DMS emoji" { spawn-sh "dms ipc call spotlight toggleQuery ':e'"; }
-	// Mod+W hotkey-overlay-title="Wallpaper Selector: DMS wallpaper" { spawn-sh "dms ipc call file browse wallpaper"; }
-	//    Super+Alt+L hotkey-overlay-title="Lock the Screen: DMS lock" { spawn-sh "dms ipc call lock lock"; }
+    ALT+Space hotkey-overlay-title="Run an Application: rofi launcher" { spawn-sh "rofi -show drun"; }
+    ALT+Ctrl+Space hotkey-overlay-title="Run an Application: rofi menu launcher" { spawn-sh "~/.local/bin/rofi-menu"; }
+    Mod+Ctrl+R hotkey-overlay-title="Reload waybar" { spawn-sh "~/.local/bin/restart-app waybar"; }
+    Mod+P hotkey-overlay-title="Power menu" { spawn-sh "~/.local/bin/rofi-powermenu"; }
+    Mod+N { spawn-sh "~/.local/bin/nightlight-toggle niri"; }
+    Mod+Period { spawn "rofimoji"; }
+ 
+    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "~/.local/bin/volume-control up"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "~/.local/bin/volume-control down"; }
+    XF86AudioMute        allow-when-locked=true { spawn-sh "~/.local/bin/volume-control mute"; }
 
-	// ----------- Noctalia shell keybinds ------------
-	ALT+Space hotkey-overlay-title="Run an Application: noctalia launcher" { spawn-sh "qs -c noctalia-shell ipc call launcher toggle"; }
-	// Require `cliphist` package
-	Mod+V hotkey-overlay-title="Clipboard: noctalia clipboard" { spawn-sh "qs -c noctalia-shell ipc call launcher clipboard"; }
-	Mod+P hotkey-overlay-title="Session manager: noctalia session" { spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"; }
-	Mod+Period hotkey-overlay-title="Session manager: noctalia session" { spawn-sh "qs -c noctalia-shell ipc call launcher emoji"; }
-	Mod+W hotkey-overlay-title="Wallpaper Selector: noctalia wallpaper" { spawn-sh "qs -c noctalia-shell ipc call wallpaper toggle"; }
-	Super+Alt+L hotkey-overlay-title="Lock the Screen: noctalia lock" { spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"; }
-
-    // "-l 1.0" limits the volume to 100%.
-    XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1.0"; }
-    XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"; }
-    XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
-    XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-
-    XF86AudioPlay        allow-when-locked=true { spawn-sh "playerctl play-pause"; }
-    XF86AudioStop        allow-when-locked=true { spawn-sh "playerctl stop"; }
-    XF86AudioPrev        allow-when-locked=true { spawn-sh "playerctl previous"; }
-    XF86AudioNext        allow-when-locked=true { spawn-sh "playerctl next"; }
-
-    XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+5%"; }
-    XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "5%-"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn-sh "~/.local/bin/brightness-control up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn-sh "~/.local/bin/brightness-control down"; }
 
     Mod+O repeat=false { toggle-overview; }
 
@@ -102,32 +84,15 @@ binds {
     Mod+Shift+8 { move-column-to-workspace 8; }
     Mod+Shift+9 { move-column-to-workspace 9; }
 
+    // window position control
     Mod+BracketLeft  { consume-or-expel-window-left; }
     Mod+BracketRight { consume-or-expel-window-right; }
 
-    // Mod+R { switch-preset-column-width; }
-    // Cycling through the presets in reverse order is also possible.
-    // Mod+R { switch-preset-column-width-back; }
-    // Mod+Shift+R { switch-preset-window-height; }
-    // Mod+Ctrl+R { reset-window-height; }
     Mod+F { maximize-column; }
     Mod+Shift+F { fullscreen-window; }
 
-    // Expand the focused column to space not taken up by other fully visible columns.
-    // Makes the column "fill the rest of the space".
-    Mod+Ctrl+F { expand-column-to-available-width; }
-
-    Mod+C { center-column; }
-
-    // Center all fully visible columns on screen.
-    Mod+Ctrl+C { center-visible-columns; }
-
     Mod+Minus { set-column-width "-5%"; }
     Mod+Equal { set-column-width "+5%"; }
-
-    // Finer height adjustments when in column with other windows.
-    Mod+Shift+Minus { set-window-height "-5%"; }
-    Mod+Shift+Equal { set-window-height "+5%"; }
 
     // Move the focused window between the floating and the tiling layout.
     Mod+X       { toggle-window-floating; }
@@ -138,10 +103,6 @@ binds {
     Alt+Print { screenshot-window; }
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
-
-	Mod+R hotkey-overlay-title="Screen recording: gpu-screen-recorder" {
-		spawn-sh "qs -c noctalia-shell ipc call plugin:screen-recorder toggle"
-	}
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
     Mod+Shift+E { quit; }
