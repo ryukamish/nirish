@@ -1,6 +1,7 @@
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     match app-id=r#"zen$"# title="^Picture-in-Picture$"
+    match app-id=r#"librewolf$"# title="^Picture-in-Picture$"
     open-floating true
 	// Anchor to the top edge of the screen.
     default-floating-position x=20 y=20 relative-to="bottom-right"
@@ -15,15 +16,25 @@ window-rule {
 	match app-id="chromium"
 	match app-id="google-chrome"
 	match app-id="brave-browser"
+	match app-id="librewolf"
 
 	open-maximized true
 }
 
 window-rule {
 	match app-id="TUI.float"
-	match app-id=r#"zen"# title="Raindrop"
 
 	open-floating true
+  default-column-width { proportion 0.75; }
+  default-window-height { proportion 0.7; }
+}
+
+window-rule {
+    match app-id="mpv"
+    // Properties
+    open-floating true
+  default-column-width { proportion 0.7; }
+  default-window-height { proportion 0.8; }
 }
 
 // Rounded cornors for all windows
