@@ -1,12 +1,14 @@
 input {
+  focus-follows-mouse max-scroll-amount="95%"
     keyboard {
         xkb {
             layout "us"
+            options "caps:escape"   // swap caps with escape key
         }
     }
 
     touchpad {
-		dwt				// palm rejection while typing
+        dwt				// palm rejection while typing
         tap
         natural-scroll
     }
