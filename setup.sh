@@ -52,6 +52,8 @@ package_list=(
   "nwg-look"
   "mako"
   "wl-clipboard"
+  "swaylock-effects"
+  "swayidle"
   # System utilities
   "xdg-user-dirs"
   "xdg-utils"
