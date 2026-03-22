@@ -1,8 +1,9 @@
 // spawn-at-startup "qs" "-c" "noctalia-shell" "--no-duplicate"
 spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
 spawn-at-startup "swayidle" "-w" \
-    "timeout" "300" "swaylock" \
-    "timeout" "310" "'niri' 'msg' 'action' 'power-off-monitors'" \
+    "timeout" "300" "'niri' 'msg' 'action' 'power-off-monitors'" \
+    "timeout" "310" "swaylock" \
+    "resume" "'niri' 'msg' 'action' 'power-on-monitors'" \
     "before-sleep" "swaylock"
 
 spawn-at-startup "swww-daemon"
