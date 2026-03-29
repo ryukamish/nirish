@@ -21,12 +21,21 @@ window-rule {
 	open-maximized true
 }
 
+// Floating window for my bash scripts
 window-rule {
 	match app-id="TUI.float"
+	match app-id="Wifitui"
 
 	open-floating true
   default-column-width { proportion 0.75; }
   default-window-height { proportion 0.7; }
+}
+
+// KDE file picker
+window-rule {
+  match app-id="org.freedesktop.impl.portal.desktop.kde"
+
+  open-floating true
 }
 
 window-rule {
@@ -39,7 +48,7 @@ window-rule {
 
 // Rounded cornors for all windows
 window-rule {
-//     geometry-corner-radius 12
+    geometry-corner-radius 7
     clip-to-geometry true
 }
 
