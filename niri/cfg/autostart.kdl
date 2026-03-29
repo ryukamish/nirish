@@ -1,10 +1,18 @@
 // spawn-at-startup "qs" "-c" "noctalia-shell" "--no-duplicate"
-spawn-sh-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
+spawn-at-startup "/usr/lib/polkit-kde-authentication-agent-1 &" // Polkit
 spawn-at-startup "swayidle" "-w" \
     "timeout" "300" "'niri' 'msg' 'action' 'power-off-monitors'" \
     "timeout" "310" "swaylock" \
     "resume" "'niri' 'msg' 'action' 'power-on-monitors'" \
     "before-sleep" "swaylock"
 
-spawn-at-startup "swww-daemon"
+spawn-at-startup "awww-daemon"
 spawn-sh-at-startup "waybar"
+
+spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
+spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
+
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+
+// For KDE application compatibility
+spawn-at-startup "kded6"
