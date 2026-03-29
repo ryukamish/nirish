@@ -2,9 +2,8 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
-    Mod+E hotkey-overlay-title="File manager: pcmanfm" { spawn "pcmanfm"; }
-    Mod+B hotkey-overlay-title="Browser: librewolf" { spawn "librewolf"; }
-    Mod+Shift+B hotkey-overlay-title="Browser: librewolf ( private )" { spawn "librewolf" "--private-window"; }
+    Mod+E hotkey-overlay-title="File manager: dolphin" { spawn "dolphin"; }
+    Mod+B hotkey-overlay-title="Browser: default browser" { spawn "~/.local/bin/browser"; }
 
     ALT+Space hotkey-overlay-title="Run an Application: rofi launcher" { spawn-sh "rofi -show drun"; }
     ALT+Ctrl+Space hotkey-overlay-title="Run an Application: rofi menu launcher" { spawn-sh "~/.local/bin/rofi-menu"; }
@@ -13,6 +12,7 @@ binds {
     Mod+N { spawn-sh "~/.local/bin/nightlight-toggle niri"; }
     Mod+Period { spawn "rofimoji"; }
     Mod+V { spawn-sh "cliphist list | rofi -dmenu | cliphist decode | wl-copy"; }
+    Mod+M { spawn "strawberry"; }
  
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "~/.local/bin/volume-control up"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "~/.local/bin/volume-control down"; }
