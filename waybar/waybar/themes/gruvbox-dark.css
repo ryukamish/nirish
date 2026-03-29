@@ -1,0 +1,12 @@
+/* Gruvbox Dark Hard – only 8 colors you’ll ever need */
+@define-color background       #1d2021;  /* darkest */
+@define-color background0      #282828;  /* main background */
+@define-color background1      #3c3836;  /* statusbars, selected lines */
+@define-color background2      #504945;  /* subtle highlights */
+@define-color foreground       #ebdbb2;  /* main text */
+@define-color foreground0      #fbf1c7;  /* brightest text (rarely used) */
+@define-color accent   #fe8019;  /* bright orange – main accent */
+@define-color color1   #cc241d;  /* dark red */
+@define-color color2   #98971a;  /* dark green */
+@define-color color3   #d79921;  /* dark yellow */
+@define-color color4   #458588;  /* dark blue */

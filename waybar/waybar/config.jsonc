@@ -1,0 +1,281 @@
+// _*_ mode: jsonc _*_
+{
+	"reload_style_on_change": true,
+	"layer": "top",
+	"position": "top",
+	"modules-left": [
+		"niri/workspaces",
+		// "custom/uptime",
+		// "backlight",
+		// "group/network",
+    "mpris",
+		"custom/screenrecording-indicator"
+	],
+	"modules-center": [],
+	"modules-right": [
+		"group/expand-tray",
+    "backlight",
+    "custom/brightness",
+    "group/network",
+		// "group/hardware",
+		"group/audio",
+		"group/powerofmachine",
+		"clock"
+	],
+	"niri/workspaces": {
+		"on-click": "activate",
+		"format": "{icon}",
+		"format-icons": {
+			// "1": "1 ",
+			// "2": "2 ",
+			// "3": "3 ",
+			// "4": "4 ",
+			// "5": "5 פּ",
+			// "6": "6 ",
+			// "7": "7 ",
+			// "8": "8 ",
+			// "9": "9 ",
+			// "10": "10 ",
+			"1": "1",
+			"2": "2",
+			"3": "3",
+			"4": "4",
+			"5": "5",
+			"6": "6",
+			"7": "7",
+			"8": "8",
+			"9": "9",
+			"10": "10",
+		},
+		"all-outputs": true,
+	},
+	// module groups
+	"group/hardware": {
+		"orientation": "horizontal",
+		"modules": [
+			"cpu",
+			"memory",
+			"temperature"
+		]
+	},
+	"group/audio": {
+		"orientation": "horizontal",
+		"modules": [
+			"bluetooth",
+			"pulseaudio"
+		]
+	},
+	"group/network": {
+		"orientation": "horizontal",
+		"modules": [
+			"network",
+			"custom/vpn"
+		]
+	},
+	"group/powerofmachine": {
+		"orientation": "horizontal",
+		"modules": [
+			// "power-profiles-daemon",
+			"battery"
+		]
+	},
+	"group/expand-tray": {
+		"orientation": "inherit",
+		"drawer": {
+			"transition-duration": 600,
+			"children-class": "tray-group-item"
+		},
+		"modules": [
+			"custom/expand-icon",
+			"tray"
+		]
+	},
+	// Individual modules
+	"clock": {
+		"interval": 60,
+		"tooltip": true,
+		"format": " {:%R  %d/%m}",
+		"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+		"format-alt": " {:%a, %d, %b %Y}"
+	},
+	"memory": {
+		"interval": 12,
+		"format": " {}%"
+	},
+	"cpu": {
+		"interval": 5,
+		"format": " {usage}%",
+		"on-click": "$TERMINAL -e btop"
+	},
+	"temperature": {
+		// The thermal zone for CPU changes from time to time on MSI Laptops
+		"thermal-zone": 5,
+		"critical-threshold": 80,
+		"format": " {temperatureC}°C"
+	},
+  "mpris": {
+    "format": "{status_icon} {artist} - {title}",
+    "format-paused": "{status_icon} {artist} - {title}",
+    "player-icons": {
+      "default": "▶",
+      "mpv": "🎵"
+    },
+    "status-icons": {
+      "paused": "⏸",
+      "default": "▶",
+    },
+	"ignored-players": ["zen"]
+  },
+	"network": {
+		"interface": "wlan0",
+		"family": "ipv4",
+		"format": "{ifname}",
+		"format-wifi": "{icon} {essid}",
+		"format-ethernet": " {ipaddr}/<span color='#aaaaaa'>{cidr}</span>",
+		"format-disconnected": "󰇨 DC'D",
+		"format-icons": [
+			"󰤯",
+			"󰤟",
+			"󰤢",
+			"󰤥",
+			"󰤨"
+		],
+		"tooltip-format": "{ifname} via {gwaddr}",
+		"tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+		"tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
+		"tooltip-format-disconnected": "Disconnected",
+		"interval": 5,
+		"on-click": "$TERMINAL --class Wifitui -e wifitui",
+		"on-click-right": "rfkill toggle wlan"
+	},
+	"backlight": {
+		"device": "intel_backlight",
+		"format": "{icon} {percent}%",
+		"format-icons": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"bluetooth": {
+		"format": " {num_connections}",
+		"format-disabled": "<span color='#aaaaaa'>󰂲</span>",
+		"format-connected": " {num_connections}",
+		"tooltip-format": "Devices connected: {num_connections}\n{device_alias} at {device_battery_percentage}%",
+		"on-click": "$TERMINAL --title=Bluetui --class=TUI.float -e bluetui",
+		"on-click-right": "rfkill toggle bluetooth"
+	},
+	"pulseaudio": {
+		"format": "{icon} {volume}%",
+		"on-click": "$TERMINAL --title=Wiremix --class=TUI.float -e wiremix",
+		"tooltip-format": "{desc}",
+		"scroll-step": 5,
+		"format-muted": "<span color='#aaaaaa' </span>",
+		"format-icons": {
+			"headphone": "",
+			"default": [
+				"",
+				"",
+				""
+			]
+		}
+	},
+	"battery": {
+		"format": "{capacity}% {icon}",
+		"format-discharging": "{icon} {capacity}%",
+		"format-charging": "{icon} {capacity}%",
+		"format-plugged": " {capacity}%",
+		"format-full": "󰁹 {capacity}%",
+		"format-icons": {
+			"charging": [
+				"󰢜",
+				"󰂆",
+				"󰂇",
+				"󰂈",
+				"󰢝",
+				"󰂉",
+				"󰢞",
+				"󰂊",
+				"󰂋",
+				"󰂅"
+			],
+			"default": [
+				"󰁺",
+				"󰁻",
+				"󰁼",
+				"󰁽",
+				"󰁾",
+				"󰁿",
+				"󰂀",
+				"󰂁",
+				"󰂂",
+				"󰁹"
+			]
+		},
+		"interval": 5,
+		"states": {
+			"warning": 20,
+			"critical": 10
+		}
+	},
+	"power-profiles-daemon": {
+		"format": "{icon}",
+		"tooltip-format": "Power profile: {profile}\nDriver: {driver}",
+		"tooltip": true,
+		"format-icons": {
+			"default": "",
+			"performance": "",
+			"balanced": "",
+			"power-saver": ""
+		}
+	},
+	// Tray
+	"tray": {
+		"icon-size": 10,
+		"spacing": 10
+	},
+	// Custom modules
+	"custom/vpn": {
+		"format": " VPN",
+		"exec": "echo '{\"class\": \"connected\"}'",
+		"exec-if": "test -d /proc/sys/net/ipv4/conf/proton0",
+		"return-type": "json",
+		"interval": 5
+	},
+	"custom/expand-icon": {
+		"format": " ",
+		"tooltip": false
+	},
+	"custom/screenrecording-indicator": {
+		"on-click": "~/.local/bin/screenrecord",
+		"exec": "~/.local/bin/waybar-screenrecord",
+		"signal": 8,
+		"return-type": "json"
+	},
+	"custom/uptime": {
+		"format": "{}",
+		"format-icon": [
+			""
+		],
+		"tooltip": false,
+		"interval": 1600,
+		"exec": "~/.config/waybar/scripts/uptime.sh"
+	},
+  "custom/brightness": {
+    "format": "☀ {}%",
+    "tooltip-format": "EXT: ☀ {}%",
+    "interval": "once",
+    "signal": 9,
+    "exec": "~/.config/waybar/scripts/brightness.sh get",
+    "on-scroll-up": "~/.config/waybar/scripts/brightness.sh up",
+    "on-scroll-down": "~/.config/waybar/scripts/brightness.sh down",
+    "on-click": "~/.config/waybar/scripts/brightness.sh left_click",
+    "on-click-right": "~/.config/waybar/scripts/brightness.sh right_click",
+  },
+}
