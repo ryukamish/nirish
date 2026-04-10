@@ -100,6 +100,8 @@
 		"return-type": "json",
 		"format": "{}"
 	},
+	// The below module require `ddcutil` to be working on the system
+	// or it will not work
 	"custom/brightness": {
 		"format": "☀ {}%",
 		"tooltip-format": "EXT: ☀ {}%",
