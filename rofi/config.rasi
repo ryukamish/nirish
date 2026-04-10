@@ -23,7 +23,7 @@ configuration {
 @import                          "colors/tokyonight.rasi"
 
 * {
-    font: "GeistMono Nerd Font Propo 12";
+    font: "JetBrainsMono Nerd Font Propo 12";
 }
 
 * {
