@@ -1,223 +1,116 @@
-// _*_ mode: jsonc _*_
 {
-	"reload_style_on_change": true,
 	"layer": "top",
-	"position": "bottom",
+	"position": "top",
 	"modules-left": [
-		"niri/workspaces",
-		"custom/uptime",
-		"backlight",
-		"group/network"
+		"clock",
+		"mpris",
+		"niri/window"
 	],
-	"modules-center": [],
+	"modules-center": [
+		"custom/workspaces"
+	],
 	"modules-right": [
-		"group/expand-tray",
-		"group/hardware",
-		"group/audio",
-		"group/powerofmachine",
-		"clock"
+		"tray",
+		"network",
+		"pulseaudio",
+		"bluetooth",
+		"memory",
+		"battery"
 	],
 	"niri/workspaces": {
-		"on-click": "activate",
+		"current-only": true,
 		"format": "{icon}",
-		"format-icons": {
-			"1": "1",
-			"2": "2",
-			"3": "3",
-			"4": "4",
-			"5": "5",
-			"6": "6",
-			"7": "7",
-			"8": "8",
-			"9": "9",
-			"10": "10"
+		"all-outputs": false // usually keep false so each monitor shows its own active workspace
+	},
+	"niri/window": {
+		"format": "{app_id}"
+	},
+	"mpris": {
+		"format": "{status_icon} {artist} - {title}",
+		"format-paused": "{status_icon} <i>{artist} - {title}</i>",
+		"player-icons": {
+			"default": "▶",
+			"mpv": "🎵"
+		},
+		"status-icons": {
+			"paused": "⏸"
 		}
 	},
-	// module groups
-	"group/hardware": {
-		"orientation": "horizontal",
-		"modules": [
-			"cpu",
-			"memory",
-			"temperature"
-		]
-	},
-	"group/audio": {
-		"orientation": "horizontal",
-		"modules": [
-			"bluetooth",
-			"pulseaudio"
-		]
-	},
-	"group/network": {
-		"orientation": "horizontal",
-		"modules": [
-			"network",
-			"custom/vpn"
-		]
-	},
-	"group/powerofmachine": {
-		"orientation": "horizontal",
-		"modules": [
-			"battery"
-		]
-	},
-	"group/expand-tray": {
-		"orientation": "inherit",
-		"drawer": {
-			"transition-duration": 600,
-			"children-class": "tray-group-item"
-		},
-		"modules": [
-			"custom/expand-icon",
-			"tray"
-		]
-	},
-	// Individual modules
 	"clock": {
-		"interval": 60,
-		"tooltip": true,
-		"format": " {:%R  %d/%m}",
-		"tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-		"format-alt": " {:%a, %d, %b %Y}"
+		"format": "{:%a, %b %d %H:%M}",
+		"format-alt": "{:%Y-%m-%d}"
 	},
 	"memory": {
-		"interval": 12,
-		"format": " {}%"
+		"format": " {used}GiB"
 	},
-	"cpu": {
-		"interval": 5,
-		"format": " {usage}%",
-		"on-click": "alacritty --class TUI.float -e btop"
-	},
-	"temperature": {
-		// The thermal zone for CPU changes from time to time on MSI Laptops
-		"thermal-zone": 5,
-		"critical-threshold": 80,
-		"format": " {temperatureC}°C"
-	},
-	"network": {
-		"interface": "wlan0",
-		"family": "ipv4",
-		"format": "{ifname}",
-		"format-wifi": "{icon} {essid}",
-		"format-ethernet": " {ipaddr}/<span color='#aaaaaa'>{cidr}</span>",
-		"format-disconnected": "󰇨 DC'D",
-		"format-icons": [
-			"󰤯",
-			"󰤟",
-			"󰤢",
-			"󰤥",
-			"󰤨"
-		],
-		"tooltip-format": "{ifname} via {gwaddr}",
-		"tooltip-format-wifi": "{essid} ({frequency} GHz)\n⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-		"tooltip-format-ethernet": "⇣{bandwidthDownBytes}  ⇡{bandwidthUpBytes}",
-		"tooltip-format-disconnected": "Disconnected",
-		"interval": 5,
-		"on-click": "alacritty --class TUI.float -e wifitui",
-		"on-click-right": "rfkill toggle wlan"
-	},
-	"backlight": {
-		"device": "intel_backlight",
-		"format": "{icon} {percent}%",
-		"format-icons": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+	"battery": {
+		"states": {
+			"good": 95,
+			"warning": 30,
+			"critical": 15
+		},
+		"format": "{icon} {capacity}%",
+		"format-icons": {
+			"default": [
+				"",
+				"",
+				"",
+				"",
+				""
+			],
+			"charging": ""
+		},
+		"format-plugged": " {capacity}%"
 	},
 	"bluetooth": {
 		"format": " {num_connections}",
 		"format-disabled": "<span color='#aaaaaa'>󰂲</span>",
 		"format-connected": " {num_connections}",
 		"tooltip-format": "Devices connected: {num_connections}\n{device_alias} at {device_battery_percentage}%",
-		"on-click": "alacritty --class=TUI.float -e bluetui",
+		"on-click": "$TERMINAL --app-id=TUI.float -e bluetui",
 		"on-click-right": "rfkill toggle bluetooth"
 	},
 	"pulseaudio": {
 		"format": "{icon} {volume}%",
-		"on-click": "alacritty --class TUI.float -e wiremix",
-		"tooltip-format": "{desc}",
-		"scroll-step": 5,
-		"format-muted": "<span color='#aaaaaa' </span>",
+		"format-bluetooth": " {icon} {volume}%",
+		"format-muted": "",
 		"format-icons": {
+			"alsa_output.pci-0000_00_1f.3.analog-stereo": "",
+			"alsa_output.pci-0000_00_1f.3.analog-stereo-muted": "",
 			"headphone": "",
+			"hands-free": "",
+			"headset": "",
+			"phone": "",
+			"phone-muted": "",
+			"portable": "",
+			"car": "",
 			"default": [
-				"",
 				"",
 				""
 			]
-		}
-	},
-	"battery": {
-		"format": "{capacity}% {icon}",
-		"format-discharging": "{icon} {capacity}%",
-		"format-charging": "{icon} {capacity}%",
-		"format-plugged": " {capacity}%",
-		"format-full": "󰁹 {capacity}%",
-		"format-icons": {
-			"charging": [
-				"󰢜",
-				"󰂆",
-				"󰂇",
-				"󰂈",
-				"󰢝",
-				"󰂉",
-				"󰢞",
-				"󰂊",
-				"󰂋",
-				"󰂅"
-			],
-			"default": [
-				"󰁺",
-				"󰁻",
-				"󰁼",
-				"󰁽",
-				"󰁾",
-				"󰁿",
-				"󰂀",
-				"󰂁",
-				"󰂂",
-				"󰁹"
-			]
 		},
-		"interval": 5,
-		"states": {
-			"warning": 20,
-			"critical": 10
-		}
+		"on-click": "$TERMINAL --app-id=TUI.float -e wiremix",
+		"tooltip-format": "{desc}",
+		"scroll-step": 5
 	},
-	// Tray
-	"tray": {
-		"icon-size": 10,
-		"spacing": 10
+	"network": {
+		"interface": "wlo1",
+		"format": "{ifname}",
+		"format-wifi": " {signalStrength}%",
+		"format-ethernet": " {ipaddr}/{cidr}",
+		"format-disconnected": "󰖪", //An empty format will hide the module.
+		"tooltip-format": " {ifname} via {gwaddr}",
+		"tooltip-format-wifi": " {essid} {signalStrength}%",
+		"tooltip-format-ethernet": "{ifname}",
+		"tooltip-format-disconnected": "󰖪",
+		"max-length": 50,
+		"interval": 60,
+		"on-click": "$TERMINAL --app-id TUI.float -e wifitui",
+		"on-click-right": "rfkill toggle wlan"
 	},
-	// Custom modules
-	"custom/vpn": {
-		"format": " VPN",
-		"exec": "echo '{\"class\": \"connected\"}'",
-		"exec-if": "test -d /proc/sys/net/ipv4/conf/proton0",
+	"custom/workspaces": {
+		"exec": "~/.config/waybar/niri-workspaces",
 		"return-type": "json",
-		"interval": 5
-	},
-	"custom/expand-icon": {
-		"format": " ",
-		"tooltip": false
-	},
-	"custom/uptime": {
-		"format": "{}",
-		"format-icon": [
-			""
-		],
-		"tooltip": false,
-		"interval": 1600,
-		"exec": "~/.config/waybar/scripts/uptime.sh"
+		"format": "{}"
 	}
 }
