@@ -3,7 +3,6 @@
 	"position": "top",
 	"modules-left": [
 		"clock",
-		"mpris",
 		"niri/window"
 	],
 	"modules-center": [
@@ -24,17 +23,6 @@
 	},
 	"niri/window": {
 		"format": "{app_id}"
-	},
-	"mpris": {
-		"format": "{status_icon} {artist} - {title}",
-		"format-paused": "{status_icon} <i>{artist} - {title}</i>",
-		"player-icons": {
-			"default": "▶",
-			"mpv": "🎵"
-		},
-		"status-icons": {
-			"paused": "⏸"
-		}
 	},
 	"clock": {
 		"format": "{:%a, %b %d %H:%M}",
