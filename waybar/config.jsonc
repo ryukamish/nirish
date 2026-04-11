@@ -114,7 +114,7 @@
 		"on-click-right": "~/.config/waybar/brightness right_click"
 	},
 	"custom/screenrecording-indicator": {
-		"on-click": "~/.config/waybar/screenrecord",
+		"on-click": "~/.local/bin/screenrecord",
 		"exec": "~/.config/waybar/waybar-screenrecord",
 		"signal": 8,
 		"return-type": "json"
