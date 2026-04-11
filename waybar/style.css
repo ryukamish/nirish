@@ -27,3 +27,8 @@ window#waybar {
 #tray {
 	padding: 0 8px;
 }
+
+/* custom modules */
+#custom-screenrecording-indicator {
+	color: #ff0000;
+}

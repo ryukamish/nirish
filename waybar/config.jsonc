@@ -3,6 +3,7 @@
 	"position": "top",
 	"modules-left": [
 		"clock",
+		"custom/screenrecording-indicator",
 		"niri/window"
 	],
 	"modules-center": [
@@ -26,8 +27,7 @@
 		"format": "{app_id}"
 	},
 	"clock": {
-		"format": "{:%a, %b %d %H:%M}",
-		"format-alt": "{:%Y-%m-%d}"
+		"format": "{:%a, %b %d %H:%M}"
 	},
 	"memory": {
 		"format": " {used}GiB"
@@ -112,5 +112,11 @@
 		"on-scroll-down": "~/.config/waybar/brightness down",
 		"on-click": "~/.config/waybar/brightness left_click",
 		"on-click-right": "~/.config/waybar/brightness right_click"
+	},
+	"custom/screenrecording-indicator": {
+		"on-click": "~/.config/waybar/screenrecord",
+		"exec": "~/.config/waybar/waybar-screenrecord",
+		"signal": 8,
+		"return-type": "json"
 	}
 }
