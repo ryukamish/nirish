@@ -11,11 +11,6 @@ window#waybar {
 	color: #ffffff;
 }
 
-#workspaces button {
-	padding: 0 6px;
-	color: #cccccc;
-}
-
 /* Different battery states indicator */
 #battery.discharging.warning {
 	color: #ffa500;

@@ -8,8 +8,7 @@
 		"niri/window"
 	],
 	"modules-center": [
-		"custom/workspaces",
-		"niri/workspaces"
+		"custom/workspaces"
 	],
 	"modules-right": [
 		"tray",
@@ -20,10 +19,6 @@
 		"memory",
 		"battery"
 	],
-	"niri/workspaces": {
-		"current-only": true,
-		"format": "{value}"
-	},
 	"niri/window": {
 		"format": "{app_id} | {title}",
 		"max-length": 30
