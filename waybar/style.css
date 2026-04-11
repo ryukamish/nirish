@@ -13,8 +13,10 @@ window#waybar {
 
 #workspaces button {
 	padding: 0 6px;
+	color: #cccccc;
 }
 
+/* Different battery states indicator */
 #battery.discharging.warning {
 	color: #ffa500;
 }
@@ -27,6 +29,7 @@ window#waybar {
 #battery,
 #window,
 #custom-brightness,
+#custom-uptime,
 #memory,
 #network,
 #mpris,
@@ -42,6 +45,7 @@ window#waybar {
 #bluetooth,
 #pulseaudio,
 #custom-brightness,
+#custom-uptime,
 #battery {
 	color: #cccccc;
 }

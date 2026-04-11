@@ -4,10 +4,12 @@
 	"modules-left": [
 		"clock",
 		"custom/screenrecording-indicator",
-		"niri/window"
+		"niri/window",
+		"custom/uptime"
 	],
 	"modules-center": [
-		"custom/workspaces"
+		"custom/workspaces",
+		"niri/workspaces"
 	],
 	"modules-right": [
 		"tray",
@@ -20,11 +22,11 @@
 	],
 	"niri/workspaces": {
 		"current-only": true,
-		"format": "{icon}",
-		"all-outputs": false // usually keep false so each monitor shows its own active workspace
+		"format": "{value}"
 	},
 	"niri/window": {
-		"format": "{app_id}"
+		"format": "{app_id} | {title}",
+		"max-length": 30
 	},
 	"clock": {
 		"format": "{:%a, %b %d %H:%M}"
@@ -118,5 +120,11 @@
 		"exec": "~/.config/waybar/waybar-screenrecord",
 		"signal": 8,
 		"return-type": "json"
+	},
+	"custom/uptime": {
+		"format": "{}",
+		"interval": 1600,
+		"tooltip": false,
+		"exec": "~/.config/waybar/uptime"
 	}
 }
