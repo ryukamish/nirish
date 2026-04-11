@@ -1,8 +1,8 @@
 * {
 	border: none;
 	font-family: "JetBrainsMono Nerd Font Propo, monospace";
-	font-size: 12px;
-	font-weight: bold;
+	font-size: 14px;
+	/* font-weight: bold; */
 	min-height: 0;
 }
 
@@ -13,6 +13,14 @@ window#waybar {
 
 #workspaces button {
 	padding: 0 6px;
+}
+
+#battery.discharging.warning {
+	color: #ffa500;
+}
+
+#battery.discharging.critical {
+	color: #ff0000;
 }
 
 #clock,
@@ -26,6 +34,16 @@ window#waybar {
 #pulseaudio,
 #tray {
 	padding: 0 8px;
+}
+
+/* add grey color to some modules */
+#network,
+#memory,
+#bluetooth,
+#pulseaudio,
+#custom-brightness,
+#battery {
+	color: #cccccc;
 }
 
 /* custom modules */

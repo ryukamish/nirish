@@ -47,7 +47,7 @@
 				"",
 				""
 			],
-			"charging": ""
+			"charging": "<span color='#ffff00'></span>"
 		},
 		"format-plugged": " {capacity}%"
 	},
