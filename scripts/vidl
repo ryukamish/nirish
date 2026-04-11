@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+msg() {
+    case "$1" in
+        "error") gum log --structured --level error "$2"; exit 1 ;;
+        "info") gum log --structured --level info "$2" ;;
+        "success") gum log --structured --level success "$2" ;;
+        "complete") gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s' ;;
+    esac
+}
+
+Url=$(gum input --header.bold --header.foreground="#FCB8EF" --header="URL of video:" --placeholder="Enter URL..." || msg error "Please enter a url.")
+VideoDownloadMode=$(gum choose --header="How many files to download:" --header.bold --header.foreground="#FCB8EF" "Single" "Batch" || msg error "Please choose a video download mode.")
+DownloadDirectory=$(find "$HOME/Videos" -type d | fzf --layout=reverse --height=50% --border || msg error "Did not select a download directory.")
+
+if [ -n "$Url" ]; then
+    case "$VideoDownloadMode" in
+        Single)
+            VideoQuality=$(gum choose --header="Choose video quality:" --header.bold --header.foreground="#FCB8EF" "Default" "720p" "1080p" || msg error "Please choose video quality.")
+            case "$VideoQuality" in
+                Default)
+                    SeekOptions=$(gum choose --header="Download a portion of video?" --header.bold --header.foreground="#FCB8EF" "1. No Seek" "2. One point to Another" "3. One point to End of video")
+                    case "$SeekOptions" in
+                        1*)
+                            yt-dlp -N 5 -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                        2*)
+                            StartSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek start point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            EndSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek end point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            yt-dlp --download-sections "*$StartSeek-$EndSeek" -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                        3*)
+                            StartSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek start point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            yt-dlp --download-sections "*$StartSeek-inf" -N 5 -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                    esac
+                    ;;
+                720p)
+                    SeekOptions=$(gum choose --header="Download a portion of video?" --header.bold --header.foreground="#FCB8EF" "1. No Seek" "2. One point to Another" "3. One point to End of video")
+                    case "$SeekOptions" in
+                        1*)
+                            yt-dlp -f "best[height<=720]" -N 5 -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                        2*)
+                            StartSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek start point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            EndSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek end point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            yt-dlp -f "best[height<=720]" --download-sections "*$StartSeek-$EndSeek" -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                        3*)
+                            StartSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek start point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            yt-dlp -f "best[height<=720]" --download-sections "*$StartSeek-inf" -N 5 -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                    esac
+                    ;;
+                1080p)
+                    SeekOptions=$(gum choose --header="Download a portion of video?" --header.bold --header.foreground="#FCB8EF" "1. No Seek" "2. One point to Another" "3. One point to End of video")
+                    case "$SeekOptions" in
+                        1*)
+                            yt-dlp -f "best[height<=1080]" -N 5 -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                        2*)
+                            StartSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek start point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            EndSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek end point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            yt-dlp -f "best[height<=1080]" --download-sections "*$StartSeek-$EndSeek" -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                        3*)
+                            StartSeek=$(gum input --header.bold --header.foreground="#FCB8EF" --header="Enter seek start point:" --placeholder="HH:MM:SS or MM:SS or seconds")
+                            yt-dlp -f "best[height<=1080]" --download-sections "*$StartSeek-inf" -N 5 -o "$DownloadDirectory/%(title)s.%(ext)s" "$Url"
+                            ;;
+                    esac
+                    ;;
+            esac
+            ;;
+        Batch) ;;
+    esac
+fi

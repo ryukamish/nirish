@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+RED="\e[31m" RESET="\e[0m"
+
+cmd=$(which "$1" 2>/dev/null)
+editor="${EDITOR:-nvim}"
+
+if [ -z "$cmd" ]; then
+  printf '\n%b\n' "${RED}Error${RESET}: command not in path or wrong name."
+else
+  "$editor" "$cmd" || exit 0
+fi

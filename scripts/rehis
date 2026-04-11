@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+RED="\e[31m" GREEN="\e[32m" RESET="\e[0m"
+
+msg() {
+	case "$1" in
+	error)
+		printf '%b\n' "${RED}$2${RESET}"
+		bash -c -- read -n 1 -s -r
+		;;
+	done)
+		printf '%b\n' "${GREEN}$2${RESET}"
+		bash -c -- read -n 1 -s -r
+		;;
+	esac
+}
+
+current_shell=$(getent passwd "$USER" | cut -d: -f7 | xargs basename)
+fzf_opts=(
+	"--height=50%"
+	"--border"
+	"--layout=reverse"
+)
+
+if [ "$current_shell" == "bash" ]; then
+	# Get the history file path
+	if [ -s "$HOME/.local/share/bash/history" ]; then
+		history_file="$HOME/.local/share/bash/history"
+	elif [ -s "$HOME/.bash_history" ]; then
+		history_file="$HOME/.bash_history"
+	fi
+	# Check if the history file exists and is not empty
+	if [ -s "$history_file" ]; then
+		cat "$history_file" |
+			fzf "${fzf_opts[@]}" |
+			wl-copy ||
+			msg error "Nothing selected to copy"
+	else
+		msg error "No history found"
+	fi
+elif [ "$current_shell" == "zsh" ]; then
+	# Get the history file path
+	if [ -s "$HOME/.zsh_history" ]; then
+		history_file="$HOME/.zsh_history"
+	elif [ -s "$HOME/.local/share/zsh/history" ]; then
+		history_file="$HOME/.local/share/zsh/history"
+	fi
+	# Check if the history file exists and is not empty
+	if [ -n "$history_file" ]; then
+		cat "$history_file" |
+			cut -d';' -f2 |
+			fzf "${fzf_opts[@]}" |
+			wl-copy ||
+			msg error "Nothing selected to copy"
+	else
+		msg error "No history found"
+	fi
+fi

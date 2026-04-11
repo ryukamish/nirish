@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Colors
+readonly RED='\e[31m'
+readonly GREEN='\e[32m'
+readonly YELLOW='\e[33m'
+readonly BLUE='\e[34m'
+readonly BOLD='\e[1m'
+readonly RESET='\e[0m'
+
+# Check required tools
+for tool in fzf yay; do
+	if ! command -v "$tool" >/dev/null 2>&1; then
+		echo -e "${RED}Error: $tool is not installed${RESET}"
+		[[ "$tool" == "yay" ]] && echo -e "${YELLOW}Install yay first: https://github.com/Jguer/yay${RESET}"
+		exit 1
+	fi
+done
+
+# FZF configuration
+fzf_args=(
+	--multi
+	--preview 'yay -Sii {1}'
+	--preview-label-pos='bottom'
+	--preview-window 'down:65%:wrap'
+	--color 'pointer:green,marker:green'
+	--header='Select AUR packages to install (TAB to select multiple, ENTER to confirm)'
+	--border
+)
+
+echo -e "${BLUE}${BOLD}Loading AUR package list...${RESET}\n"
+
+# Get package selections
+pkg_names=$(yay -Slqa | fzf "${fzf_args[@]}" || true)
+
+# Check if user selected anything
+if [[ -z "$pkg_names" ]]; then
+	echo -e "${YELLOW}No packages selected. Exiting.${RESET}"
+	exit 0
+fi
+
+# Show what will be installed
+echo -e "${BLUE}${BOLD}Selected AUR packages:${RESET}"
+echo "$pkg_names" | sed 's/^/  - /'
+echo
+
+# Convert to array for safe handling
+mapfile -t packages < <(echo "$pkg_names")
+
+# Install packages
+echo -e "${GREEN}${BOLD}Installing ${#packages[@]} AUR package(s)...${RESET}\n"
+
+if yay -S --noconfirm "${packages[@]}"; then
+	echo
+	echo -e "${GREEN}${BOLD}✓ Successfully installed ${#packages[@]} AUR package(s)${RESET}"
+else
+	echo
+	echo -e "${RED}${BOLD}✗ Installation failed or was incomplete${RESET}"
+fi
+
+echo
+
+# Keep window open
+if command -v gum >/dev/null 2>&1; then
+	gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
+else
+	echo -e "${BLUE}Press any key to close...${RESET}"
+	read -n 1 -s
+fi

@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+hyprland_nightlight_toggle() {
+  # Default temperature values
+  ON_TEMP=4500
+  OFF_TEMP=6000
+  # Ensure hyprsunset is running
+  if ! pgrep -x hyprsunset; then
+    hyprsunset &
+    sleep 1 # Give it time to register
+  fi
+  # Query the current temperature
+  CURRENT_TEMP=$(hyprctl hyprsunset temperature 2>/dev/null | grep -oE '[0-9]+')
+  if [[ "$CURRENT_TEMP" == "$OFF_TEMP" ]]; then
+    hyprctl hyprsunset temperature $ON_TEMP
+    notify-send " Nightlight screen temperature"
+  else
+    hyprctl hyprsunset temperature $OFF_TEMP
+    notify-send " Daylight screen temperature"
+  fi
+}
+
+niri_nightlight_toggle() {
+  if pgrep -x wlsunset; then
+    killall wlsunset
+    notify-send " Daylight screen temperature"
+  else
+    setsid -f wlsunset -T 4500
+    notify-send " Nightlight screen temperature"
+  fi
+}
+
+case "$1" in
+*niri)
+  niri_nightlight_toggle
+  ;;
+*hyprland)
+  hyprland_nightlight_toggle
+  ;;
+esac

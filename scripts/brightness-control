@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# Taken from: https://github.com/salanpro/hyprland/tree/047f998e710b0ffe8d841a89fb7749b50c931b2c/.config/hypr/scripts
+
+# Brightness up and down
+if [[ "$1" == "up" ]]; then
+    brightnessctl set -e1 -n2 5%+ -m \
+        | awk -F ',' '{print $4+0}' \
+        | xargs -I[] notify-send -e -u low -h \
+        string:x-canonical-private-synchronous:brightness_notif -h \
+        int:value:[] "☀ Brightness: []%"
+elif [[ "$1" == "down" ]]; then
+    brightnessctl set -e1 -n2 5%- -m \
+        | awk -F ',' '{print $4+0}' \
+        | xargs -I[] notify-send -e -u low -h \
+        string:x-canonical-private-synchronous:brightness_notif -h \
+        int:value:[] "☀ Brightness: []%"
+fi

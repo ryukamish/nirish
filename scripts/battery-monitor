@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Device path from 'upower -e'
+BATTERY_PATH="/org/freedesktop/UPower/devices/DisplayDevice"
+
+# Get initial battery percentage
+get_battery_percentage() {
+    busctl get-property org.freedesktop.UPower "$BATTERY_PATH" org.freedesktop.UPower.Device Percentage |
+        awk '{print int($2)}'
+    }
+
+while true; do
+    PERCENT=$(get_battery_percentage)
+
+    if [[ $PERCENT -le 10 ]]; then
+        notify-send -u critical "Battery Low" "Battery at ${PERCENT}%" -i battery-caution -t 30000
+        # Wait 5 minutes before rechecking to avoid spam
+        sleep 300
+    else
+        # Check every minute otherwise
+        sleep 60
+    fi
+done

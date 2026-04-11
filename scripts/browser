@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+default_browser=$(xdg-settings get default-web-browser)
+
+if [ -z "$default_browser" ]; then
+    notify-send -u normal "Default Browser" "Default browser not set."
+    exit 1
+fi
+
+for path in /usr/local/share/applications /usr/share/applications ~/.local/share/applications; do
+    if [ -f "$path/$default_browser" ]; then
+        browser_path="$path/$default_browser"
+        break
+    fi
+done
+
+if [ -z "$browser_path" ]; then
+    notify-send -u normal "Default Browser" "Could not find .desktop file for default browser."
+    exit 1
+fi
+
+browser_command=$(grep -m 1 '^Exec=' "$browser_path" | sed 's/^Exec=//; s/ .*$//')
+
+if [ -z "$browser_command" ]; then
+    notify-send -u normal "Default Browser" "Could not extract command from .desktop file."
+    exit 1
+elif [ -n "$browser_command" ]; then
+    $browser_command & disown
+fi

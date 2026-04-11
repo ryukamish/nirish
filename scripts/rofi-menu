@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+
+menu_args=$(printf '%b' '󰕓 Devices\n Files\n Install\n󰔎 Theme\n Record Screen\n󰮞 Remove\n󰣇 Update' | rofi -dmenu -p " Options: " -i -theme-str "window {width: 20em;}")
+
+case "$menu_args" in
+*Files)
+  rofi -show recursivebrowser -theme-str 'window {width: 42em;} listview {lines: 8;}'
+  ;;
+*Install)
+  install_args=$(printf '%b' '󰣇 Pacman\n󰣇 AUR\n TUI' | rofi -dmenu -p "󰛀 Install: " -i -theme-str "window {width: 20em;}")
+  case "$install_args" in
+  *Pacman)
+    ~/.local/bin/terminal-floating ~/.local/bin/pkg-install
+    ;;
+  *AUR)
+    ~/.local/bin/terminal-floating ~/.local/bin/pkg-aur-install
+    ;;
+  *TUI)
+    ~/.local/bin/terminal-floating ~/.local/bin/tui-install
+    ;;
+  esac
+  ;;
+*Remove)
+  remove_args=$(printf '%b' '󰣇 Packages\n TUI' | rofi -dmenu -p " Remove: " -i)
+  case "$remove_args" in
+  *Packages)
+    ~/.local/bin/terminal-floating ~/.local/bin/pkg-remove
+    ;;
+  *TUI)
+    ~/.local/bin/terminal-floating ~/.local/bin/tui-remove
+    ;;
+  esac
+  ;;
+
+*Theme)
+  # For the time being only GUI apps
+  # change theme i.e. Light & Dark
+  theme_args=$(printf '%b' '󰸉 Change Wallpaper\n Colorscheme' | rofi -dmenu -p '' -i)
+  case "$theme_args" in
+  *Change\ Wallpaper)
+    ~/.local/bin/hyprwall
+    ;;
+  *Colorscheme)
+    theme_args=$(printf '%b' 'Black Lotus\nCatppuccin Mocha\nDracula\nGruvbox Dark\nKanagawa\nRose Pine\nTokyonight' | rofi -dmenu -p 'Colorscheme: ' -i)
+    case "$theme_args" in
+    *Black\ Lotus)
+      ~/.local/bin/rofi-theme-switcher blacklotus
+      ;;
+    *Catppuccin\ Mocha)
+      ~/.local/bin/rofi-theme-switcher catppuccin-mocha
+      ;;
+    *Dracula)
+      ~/.local/bin/rofi-theme-switcher dracula
+      ;;
+    *Gruvbox\ Dark)
+      ~/.local/bin/rofi-theme-switcher gruvbox-dark
+      ;;
+    *Kanagawa)
+      ~/.local/bin/rofi-theme-switcher kanagawa
+      ;;
+    *Rose\ Pine)
+      ~/.local/bin/rofi-theme-switcher rose-pine
+      ;;
+    *Tokyonight)
+      ~/.local/bin/rofi-theme-switcher tokyonight
+      ;;
+    esac
+    ;;
+  esac
+  ;;
+*Record\ Screen)
+  record_args=$(printf '%b' '󰍹 Display\n󰽟 Display + Audio\n󰖠 Webcam + Audio\n󰹑 Region\n󱄄 Region + Audio' | rofi -dmenu -p " Record: " -i -theme-str "window {width: 20em;}")
+  case "$record_args" in
+  *Display)
+    ~/.local/bin/screenrecord output
+    ;;
+  *Display\ +\ Audio)
+    ~/.local/bin/screenrecord output --with-audio
+    ;;
+  *Webcam\ +\ Audio)
+    ~/.local/bin/screenrecord output --with-webcam --with-audio
+    ;;
+  *Region)
+    ~/.local/bin/screenrecord region
+    ;;
+  *Region\ +\ Audio)
+    ~/.local/bin/screenrecord region --with-audio
+    ;;
+  esac
+  ;;
+*Devices)
+  devices_args=$(printf '%b' 'Mount\nUnmount' | rofi -dmenu -p "󰕓 Choose: " -i)
+  case "$devices_args" in
+  Mount)
+    ~/.local/bin/terminal-floating ~/.local/bin/mount-devices Mount
+    ;;
+  Unmount)
+    ~/.local/bin/terminal-floating ~/.local/bin/mount-devices Unmount
+    ;;
+  esac
+  ;;
+*Update)
+  ~/.local/bin/terminal-floating ~/.local/bin/pkg-update
+  ;;
+esac

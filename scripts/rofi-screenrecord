@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+screenrecord_args=$(printf '%b' '󰍹 DISPLAY\n󰍹 DISPLAY+AUDIO\n󰖠 DISPLAY+WEBCAM\n REGION\n REGION+AUDIO' | rofi -dmenu -p " Record Screen: " -i)
+
+case "$screenrecord_args" in
+*DISPLAY)
+  screenrecord output
+  ;;
+*DISPLAY+AUDIO)
+  screenrecord output --with-audio
+  ;;
+*DISPLAY+WEBCAM)
+  screenrecord output --with-webcam --with-audio
+  ;;
+*REGION)
+  screenrecord region
+  ;;
+*REGION+AUDIO)
+  screenrecord region --with-audio
+  ;;
+esac

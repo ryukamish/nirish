@@ -1,0 +1,224 @@
+#!/usr/bin/env bash
+
+# set -eou pipefail
+
+branding() {
+    echo
+    cat <<'EOF'
+  /$$$$$$   /$$$$$$   /$$$$$$  /$$$$$$  /$$$$$$  /$$       /$$$$$$$  /$$
+ /$$__  $$ /$$__  $$ /$$__  $$|_  $$_/ /$$__  $$| $$      | $$__  $$| $$
+| $$  \__/| $$  \ $$| $$  \__/  | $$  | $$  \ $$| $$      | $$  \ $$| $$
+|  $$$$$$ | $$  | $$| $$        | $$  | $$$$$$$$| $$      | $$  | $$| $$
+ \____  $$| $$  | $$| $$        | $$  | $$__  $$| $$      | $$  | $$| $$
+ /$$  \ $$| $$  | $$| $$    $$  | $$  | $$  | $$| $$      | $$  | $$| $$
+|  $$$$$$/|  $$$$$$/|  $$$$$$/ /$$$$$$| $$  | $$| $$$$$$$$| $$$$$$$/| $$$$$$$$
+ \______/  \______/  \______/ |______/|__/  |__/|________/|_______/ |________/
+EOF
+echo
+}
+
+# Check for dependencies
+check_deps=$(which {gum,yt-dlp})
+if [ ! "$check_deps" ]; then
+    echo
+    gum log \
+        --structured \
+        --level error \
+        "gum and yt-dlp not installed."
+    echo
+    gum spin \
+        --spinner "globe" \
+        --title "Done! Press any key to close..." \
+        -- bash -c 'read -n 1 -s'
+    exit 1
+fi
+
+# Check for download directories
+# if doesn't exist make them
+insta_vid_dl_dir="$HOME/Videos/Instagram"
+insta_img_dl_dir="$HOME/Pictures/Instagram"
+x_vid_dl_dir="$HOME/Videos/X"
+x_img_dl_dir="$HOME/Pictures/X"
+reddit_img_dl_dir="$HOME/Pictures/Reddit"
+reddit_vid_dl_dir="$HOME/Videos/Reddit"
+# Making directories if doesn't exist
+if [ ! -d "$insta_vid_dl_dir" ]; then
+    mkdir -p "$insta_vid_dl_dir"
+elif [[ ! -d "$insta_img_dl_dir" ]]; then
+    mkdir -p "$insta_img_dl_dir"
+elif [[ ! -d "$x_vid_dl_dir" ]]; then
+    mkdir -p "$x_vid_dl_dir"
+elif [[ ! -d "$x_img_dl_dir" ]]; then
+    mkdir -p "$x_img_dl_dir"
+elif [[ ! -d "$reddit_img_dl_dir" ]]; then
+    mkdir -p "$reddit_img_dl_dir"
+elif [[ ! -d "$reddit_vid_dl_dir" ]]; then
+    mkdir -p "$reddit_vid_dl_dir"
+fi
+
+# TODO: Add comments explaining the commands
+# This here is a simple function which waits for the user
+# to press a key and exits out
+gum_done() {
+    gum spin \
+        --spinner "globe" \
+        --title "Done! Press any key to close..." \
+        -- bash -c 'read -n 1 -s'
+}
+
+gum_error() {
+    gum log --structured --level error "$1"
+}
+branding
+# Platform to download from
+platform_choice=$(gum choose \
+    --header="Choose:" \
+    --header.bold \
+    --header.foreground="#FCB8EF" \
+    "Instagram" "X" "Reddit")
+# Apply methods to determine which platform is choosen
+# Accordingly, choose how to download
+case "$platform_choice" in
+    Instagram)
+        # Taking input whether downloading videos or images
+        insta_format_choice=$(gum choose \
+            --header="Choose:" \
+            --header.bold \
+            --header.foreground="#FCB8EF" \
+            "Video" "Image" || exit 1)
+        case "$insta_format_choice" in
+            Video)
+                # Taking instagram video url
+                insta_vid_url=$(gum input \
+                    --header.bold \
+                    --header.foreground="#FCB8EF" \
+                    --header="Paste Instagram video URL." \
+                    --placeholder="Enter URL here...")
+                if [[ -n "$insta_vid_url" ]]; then
+                    yt-dlp "$insta_vid_url" -o "$insta_vid_dl_dir/%(title)s.%(ext)s" || exit 1
+                    echo
+                    gum_done
+                    echo
+                elif [[ -z "$insta_vid_url" ]]; then
+                    echo
+                    gum_error "Please input a URL."
+                    echo
+                    gum_done
+                fi
+                ;;
+            Image)
+                if command -v gallery-dl >/dev/null; then
+                    # Taking instagram image url
+                    insta_img_url=$(gum input \
+                        --header.bold \
+                        --header.foreground="#FCB8EF" \
+                        --header="Paste Instagram image URL." \
+                        --placeholder="Enter URL here...")
+                    # Instagram requires login to download images; that is why
+                    # cookies from browser is required
+                    gallery-dl --cookies-from-browser chromium --destination "$insta_img_dl_dir" "$insta_img_url"
+                    echo
+                    gum_done
+                    echo
+                else
+                    gum_error "gallery-dl is not installed."
+                    echo
+                    gum_done
+                    echo
+                fi
+                ;;
+        esac
+        ;;
+    X)
+        # Taking input whether to download video or image from X
+        x_format_choice=$(gum choose \
+            --header="Choose:" \
+            --header.bold \
+            --header.foreground="#FCB8EF" \
+            "Video" "Image" || exit 1)
+        case "$x_format_choice" in
+            Video)
+                # Taking input of X video url
+                x_vid_url=$(gum input \
+                    --header.bold \
+                    --header.foreground="#FCB8EF" \
+                    --header="Paste X video URL." \
+                    --placeholder="Paste URL here...")
+                if [ -z "$x_vid_url" ]; then
+                    # Give out error if no url provided
+                    echo
+                    gum_error "Please enter a URL."
+                    echo
+                    gum_done
+                elif [[ -n "$x_vid_url" ]]; then
+                    # Output directory with title and extension required as
+                    # downloaded file is being downloaded to a particular
+                    # directory not the dir where script is being executed
+                    yt-dlp "$x_vid_url" -o "$x_vid_dl_dir/%(title)s.%(ext)s" || exit 1
+                    echo
+                    gum_done
+                    echo
+                fi
+                ;;
+            Image)
+                if command -v gallery-dl >/dev/null; then
+                    # Take input of image url from instagram
+                    x_img_url=$(gum input \
+                        --header.bold \
+                        --header.foreground="#FCB8EF" \
+                        --header="Paste X image URL." \
+                        --placeholder="Paste URL here...")
+                    if [ -z "$x_img_url" ]; then
+                        # If no url given then throw error and exit
+                        echo
+                        gum_error "Please enter a URL."
+                        echo
+                    elif [[ -n "$x_img_url" ]]; then
+                        # FIX: Change the default browser to automatically continue
+                        # if supported browser is default otherwise exit
+                        gallery-dl --cookies-from-browser chromium --destination "$x_img_dl_dir" "$x_img_url"
+                        echo
+                        gum_done
+                        echo
+                    fi
+                else
+                    echo
+                    gum_error "gallery-dl is not installed."
+                    echo
+                    gum_done
+                fi
+                ;;
+        esac
+        ;;
+    Reddit)
+        reddit_format_choice=$(gum choose \
+            --header="Choose:" \
+            --header.bold \
+            --header.foreground="#FCB8EF" \
+            "Video" "Image" || exit 1)
+        case "$reddit_format_choice" in
+            Video)
+                reddit_vid_url=$(gum input \
+                    --header.bold \
+                    --header.foreground="#FCB8EF" \
+                    --header="Paste Reddit video URL." \
+                    --placeholder="Paste URL here...")
+                if [ -z "$reddit_vid_url" ]; then
+                    echo
+                    gum_error "Enter a URL..."
+                    echo
+                elif [ -n "$reddit_vid_url" ]; then
+                    yt-dlp "$reddit_vid_url" -o "$reddit_vid_dl_dir/%(title)s.%(ext)s" || exit 1
+                    echo
+                    gum_done
+                    echo
+                fi
+                ;;
+            Image)
+                echo
+                gum_error "Image download on Reddit not yet supported."
+                echo
+                ;;
+        esac
+        ;;
+esac

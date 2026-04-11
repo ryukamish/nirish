@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+
+# Strict mode for bash; used when wanting to find errors while scripting
+set -euo pipefail
+IFS=$'\n\t'
+
+RED="\033[1;31m"
+RESET="\033[0m"
+
+# Already defining the input file as a variable
+# as it was being a pain to check for the input file.
+input_file="$1"
+
+# Usage for script
+usage() {
+  clear
+  cat <<'EOF'
+
+TUI for ffmpeg to cut & change codec.
+
+Usage: ffut video_file
+
+EOF
+
+}
+
+# Bash expanded [] conditions of "video/*" to [..] which
+# is a blank string. That was why it was always giving
+# error message.
+check_for_vid_file() {
+  if [[ ! $(file --mime-type -b "$input_file") =~ video ]]; then
+    printf "\n%b\n" "${RED}Error${RESET}: video file not provided (got: %s)." && exit 1
+  fi
+}
+
+# Check for audio file for audio codec converstion
+check_audio_file() {
+  check_input_audio_file=$(file --mime-type -b "$input_file")
+  if [[ ! $(file --mime-type -b "$input_file") =~ audio ]]; then
+    printf "\n%b\n" "${RED}Error${RESET}: audio file not provided." && exit 1
+  fi
+}
+
+CommandArgs=$(gum choose --limit 1 --header="Choose: cut or codec" "cut" "codec" || exit 1)
+
+case "$CommandArgs" in
+# Trimming videos
+cut)
+  # Funcion call for checking video file
+  check_for_vid_file
+  # Take input from the user; what to do?
+  cut_opt=$(gum choose --limit 1 --header="Choose cut option:" "1. One point to Another" "2. One point to end of video" || exit 1)
+  case "$cut_opt" in
+  1*)
+    # First asking from where to cut and till how much
+    # then takes the input of the data and applies it to
+    # ffmpeg command. Finally, asks if original file
+    # should be deleted.
+    seek_start=$(gum input --placeholder "Start: HH:MM:SS or MM:SS or sec")
+    seek_end=$(gum input --placeholder "End: HH:MM:SS or MM:SS or sec")
+    ffmpeg -ss "$seek_start" -to "$seek_end" -i "$input_file" -c copy "$(date +"%Y%m%d_%H%M ")$input_file" || exit 1
+    gum confirm "Delete original file?" && rm "$1"
+    ;;
+  2*)
+    # Just does the same thing as above but only asks for
+    # starting point and cuts to the end of the video.
+    seek_start=$(gum input --placeholder "Start: HH:MM:SS or MM:SS or sec")
+    ffmpeg -ss "$seek_start" -i "$input_file" -c copy "$(date +"%Y%m%d_%H%M ")$input_file"
+    gum confirm "Delete original file?" && rm "$1"
+    ;;
+  *)
+    # Anything which is not a file after cut option
+    # will give out usage output.
+    usage
+    exit 1
+    ;;
+  esac
+  ;;
+# Codec change
+codec)
+  [[ check_for_vid_file || check_audio_file ]]
+  # Take input for changin either video or audio codec.
+  codec_opt=$(gum choose --limit 1 --header="Choose:" "video" "audio" || exit 1)
+  # On the basis of choice choose video or audio option.
+  case "$codec_opt" in
+  video)
+    video_codec_opt=$(gum choose --limit 1 --header="Choose: video format" "H.264" "H.265" "VP9 [webm]" || exit 1)
+    case "$video_codec_opt" in
+    H.264)
+      ffmpeg -i "$input_file" -c:v libx264 -crf 23 -c:a copy "$(date +"%Y%m%d_%H%M")_h264_$input_file" || exit 1
+      ;;
+    H.265)
+      ffmpeg -i "$input_file" -c:v libx265 -crf 28 -c:a copy "$(date +"%Y%m%d_%H%M")_h265_$input_file" || exit 1
+      ;;
+    "VP9 [webm]")
+      # Take the input file name, removes extension name with dot
+      # and changes codec to libvpx-vp9 and ext to webm
+      output_video_file=$(basename "$input_file" | sed 's/\.[^.]*$//')
+      output_video_file_name_webm=$(date +"%Y%m%d_%H%M")"_$output_video_file".webm
+      ffmpeg -i "$input_file" -c:v libvpx-vp9 -crf 30 -b:v 0 -cpu-used -0 -c:a copy -compression_level 10 "$output_video_file_name_webm" || exit 1
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+    esac
+    ;;
+  audio)
+    check_audio_file
+    audio_codec_opt=$(gum choose --limit 1 --header="Choose:" "AAC" "OPUS" "MP3" || exit 1)
+    case "$audio_codec_opt" in
+    AAC)
+      output_audio_file=$(basename "$input_file" | sed 's/\.[^.]*$//')
+      output_audio_file_aac="$output_audio_file".m4a
+      if ffmpeg -codecs 2>/dev/null | grep -q libfdk_aac; then
+        ffmpeg -i "$input_file" -c:v copy -c:a libfdk_aac -b:a 192k "$output_audio_file_aac"
+      else
+        ffmpeg -i "$input_file" -c:v copy -c:a aac -b:a 192k "$output_audio_file_aac"
+      fi
+      ;;
+    OPUS)
+      # Basically taking audio file and changing codec to libopus
+      # and file extension to .opus
+      output_audio_file=$(basename "$input_file" | sed 's/\.[^.]*$//')
+      output_audio_file_opus="$output_audio_file".opus
+      # opus codec for best efficiency
+      ffmpeg -i "$input_file" -c:a libopus -b:a 128k -vn "$output_audio_file_opus"
+      ;;
+    MP3)
+      # Same thing changing codec to libmp3lame and file
+      # extension to .mp3
+      output_audio_file=$(basename "$input_file" | sed 's/\.[^.]*$//')
+      output_audio_file_mp3="$output_audio_file".mp3
+      # High quality mp3 conversion
+      ffmpeg -i "$input_file" -c:a libmp3lame -q:a 2 -vn "$output_audio_file_mp3"
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+    esac
+    ;;
+  esac
+  ;;
+*)
+  usage
+  exit 1
+  ;;
+esac

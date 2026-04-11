@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+# Exit if no app name provided
+[ -z "$1" ] && exit 1
+
+APP_NAME="$1"
+shift  # Remove app name, leaving any additional arguments
+
+# Check if app exists in PATH
+command -v "$APP_NAME" >/dev/null 2>&1 || exit 1
+
+# Check if app is running and kill it
+if pgrep -x "$APP_NAME" >/dev/null 2>&1; then
+    # Send SIGTERM (graceful shutdown)
+    pkill -x "$APP_NAME"
+
+    # Wait for up to 2 seconds for the process to terminate
+    for i in {1..20}; do
+        pgrep -x "$APP_NAME" >/dev/null 2>&1 || break
+        sleep 0.1
+    done
+
+    # Force kill if still running
+    if pgrep -x "$APP_NAME" >/dev/null 2>&1; then
+        pkill -9 -x "$APP_NAME"
+        sleep 0.1
+    fi
+fi
+
+# Start the app detached with any additional arguments
+setsid -f "$APP_NAME" "$@" >/dev/null 2>&1

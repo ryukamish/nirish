@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+power_args=$(printf '%b' ' Lock\nLogout\n Restart\n󰒲 Suspend\n󰋊 Hibernate\n󰚦 Shutdown' |
+  rofi -dmenu -p "󰐥 " -i -theme-str 'window {width: 12em; padding: 2px; height: 16em;}')
+
+case "$power_args" in
+*Lock)
+  if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+    command -v swaylock &>/dev/null && swaylock
+  elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+    hyprlock
+  fi
+  ;;
+*Logout)
+  if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+    niri msg action quit
+  elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+    hyprctl dispatch exit
+  fi
+  ;;
+*Restart)
+  systemctl reboot
+  ;;
+*Suspend)
+  systemctl suspend
+  ;;
+*Hibernate)
+  systemctl hibernate
+  ;;
+*Shutdown)
+  if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+    systemctl poweroff
+  elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+    hyprctl dispatch killactive && sleep 0.1 && hyprctl dispatch killactive && sleep 0.1 && systemctl poweroff
+    # hyprctl clients -j | jq -r '.[].pid' | xargs -r kill -9; systemctl poweroff
+  fi
+  ;;
+esac

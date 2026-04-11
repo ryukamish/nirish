@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+# Colors
+RED='\e[31m'
+GREEN='\e[32m'
+YELLOW='\e[33m'
+BLUE='\e[34m'
+BOLD='\e[1m'
+RESET='\e[0m'
+
+# Check required tools
+for tool in fzf pacman; do
+  if ! command -v "$tool" >/dev/null 2>&1; then
+    echo -e "${RED}Error: $tool is not installed${RESET}"
+    notify-send "ERROR" "$tool is not installed."
+    exit 1
+  fi
+done
+
+# FZF configuration
+fzf_args=(
+  --multi
+  --preview 'pacman -Qi {1}'
+  --preview-label-pos='bottom'
+  --preview-window 'down:65%:wrap'
+  --color 'pointer:red,marker:red'
+  --header='Select packages to REMOVE (TAB to select multiple, ENTER to confirm)'
+  --border
+)
+
+echo -e "${BLUE}${BOLD}Loading installed packages...${RESET}\n"
+
+# Get package selections (use pacman instead of yay for compatibility)
+if command -v yay >/dev/null 2>&1; then
+  pkg_names=$(yay -Qqe | fzf "${fzf_args[@]}" || true)
+else
+  pkg_names=$(pacman -Qqe | fzf "${fzf_args[@]}" || true)
+fi
+
+# Check if user selected anything
+if [[ -z "$pkg_names" ]]; then
+  echo -e "${YELLOW}No packages selected. Exiting.${RESET}"
+  exit 0
+fi
+
+# Show what will be removed
+echo -e "${RED}${BOLD} WARNING: The following packages will be REMOVED:${RESET}"
+echo "$pkg_names" | sed 's/^/  - /'
+echo
+
+# Convert to array for safe handling
+mapfile -t packages < <(echo "$pkg_names")
+
+# Remove packages
+echo -e "${RED}${BOLD}Removing ${#packages[@]} package(s)...${RESET}\n"
+
+if sudo pacman -Rns --noconfirm "${packages[@]}"; then
+  echo
+  echo -e "${GREEN}${BOLD}✓ Successfully removed ${#packages[@]} package(s)${RESET}"
+
+  # Check for new orphans
+  orphans=$(pacman -Qtdq 2>/dev/null || true)
+  if [[ -n "$orphans" ]]; then
+    echo -e "${YELLOW}ℹ Found new orphaned packages (run pkg-update to clean them)${RESET}"
+  fi
+else
+  echo
+  echo -e "${RED}${BOLD}✗ Removal failed or was incomplete${RESET}"
+fi
+
+echo
+
+# Keep window open
+if command -v gum >/dev/null 2>&1; then
+  gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
+else
+  echo -e "${BLUE}Press any key to close...${RESET}"
+  read -n 1 -s
+fi
