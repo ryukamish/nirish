@@ -3,9 +3,9 @@
 	"position": "top",
 	"modules-left": [
 		"clock",
+		"custom/uptime",
 		"custom/screenrecording-indicator",
-		"niri/window",
-		"custom/uptime"
+		"niri/window"
 	],
 	"modules-center": [
 		"custom/workspaces",
