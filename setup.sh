@@ -153,3 +153,10 @@ xdg-mime default mpv.desktop video/x-ms-asf
 xdg-mime default mpv.desktop video/x-ogm+ogg
 xdg-mime default mpv.desktop video/x-theora+ogg
 xdg-mime default mpv.desktop application/ogg
+
+# Start niri without a display manager
+# if [ -z "$DISPLAY" ] && [ "$(tty)" = "/dev/tty1" ] && [ -z "$NIRI_LOADED" ]; then
+# 	export NIRI_LOADED=1
+# 	exec niri-session 
+# fi
+
