@@ -31,6 +31,14 @@ window-rule {
   default-window-height { proportion 0.7; }
 }
 
+// Floating window rule for applications
+window-rule {
+	match app-id="pavucontrol"
+	open-floating true
+	default-column-width { proportion 0.75; }
+	default-window-height { proportion 0.7; }
+}
+
 // KDE file picker
 window-rule {
   match app-id="org.freedesktop.impl.portal.desktop.kde"
