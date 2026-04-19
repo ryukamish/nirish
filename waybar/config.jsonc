@@ -75,7 +75,8 @@
 				""
 			]
 		},
-		"on-click": "$TERMINAL --app-id=TUI.float -e wiremix",
+		// "on-click": "$TERMINAL --app-id=TUI.float -e wiremix",
+		"on-click": "pavucontrol",
 		"tooltip-format": "{desc}",
 		"scroll-step": 5
 	},
