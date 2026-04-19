@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+chk_idle=$(pgrep swayidle)
+if [ -n "$chk_idle" ]; then
+	pkill swayidle && notify-send "SWAYIDLE" "Idling stopped"
+else
+	setsid -f swayidle -w \
+    timeout 600 'swaylock -f' \
+    timeout 630 'niri msg action power-off-monitors' \
+    resume 'niri msg action power-on-monitors' \
+    before-sleep 'swaylock -f' && \
+	notify-send "SWAYIDLE" "Idling started"
+fi

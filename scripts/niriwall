@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+
+WALLDIR="$HOME/Pictures/Wallpapers"
+CACHE="$HOME/.cache/rofi-wallpaper"
+mkdir -p "$CACHE"
+
+# Generate thumbnails (only missing ones)
+find "$WALLDIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | while read -r img; do
+  name="$(basename "$img")"
+  thumb="$CACHE/$name.png"
+  [ ! -f "$thumb" ] && magick "$img" -resize 500x500^ -gravity center -extent 500x500 "$thumb"
+done
+
+# This is the key: use -show-icons and tell rofi where the icons are
+chosen=$(find "$WALLDIR" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) | sort |
+  while read -r img; do
+    name="$(basename "$img")"
+    echo -e "$name\0icon\x1f$CACHE/$name.png"
+  done |
+  rofi -dmenu \
+    -p "Wallpaper" \
+    -i \
+    -show-icons \
+    -theme-str 'window { width: 90%; height: 80%; }' \
+    -theme-str 'listview { columns: 5; lines: 3; spacing: 20px; }' \
+    -theme-str 'element-icon { size: 200px; horizontal-align: 0.5; }' \
+    -theme-str 'element-text { enabled: false; }')
+
+[ -z "$chosen" ] && exit
+
+fullpath="$WALLDIR/$chosen"
+awww img "$fullpath" --transition-type wipe --transition-fps 60 --transition-angle 45 --transition-step 30

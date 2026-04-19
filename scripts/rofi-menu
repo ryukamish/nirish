@@ -38,7 +38,7 @@ case "$menu_args" in
   theme_args=$(printf '%b' '󰸉 Change Wallpaper\n Colorscheme' | rofi -dmenu -p '' -i)
   case "$theme_args" in
   *Change\ Wallpaper)
-    ~/.local/bin/hyprwall
+    ~/.local/bin/niriwall
     ;;
   *Colorscheme)
     theme_args=$(printf '%b' 'Black Lotus\nCatppuccin Mocha\nDracula\nGruvbox Dark\nKanagawa\nRose Pine\nTokyonight' | rofi -dmenu -p 'Colorscheme: ' -i)
