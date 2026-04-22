@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+cmd="$*"
+exec setsid -- $TERMINAL --app-id TUI.float -e bash -c "$cmd"
