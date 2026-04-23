@@ -1,9 +1,9 @@
 spawn-sh-at-startup "systemctl --user start stasis"
 
 spawn-at-startup "awww-daemon"
-spawn-sh-at-startup "waybar"
+spawn-at-startup "waybar"
 
 spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
 spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
 
-spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=niri"

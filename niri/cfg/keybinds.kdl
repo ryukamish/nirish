@@ -2,18 +2,18 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
-    Mod+E hotkey-overlay-title="File manager: dolphin" { spawn "dolphin"; }
+    Mod+E hotkey-overlay-title="File manager: nautilus" { spawn "nautilus"; }
     Mod+B hotkey-overlay-title="Browser: default browser" { spawn "~/.local/bin/browser"; }
 
     ALT+Space hotkey-overlay-title="Run an Application: rofi launcher" { spawn-sh "rofi -show drun"; }
     ALT+Ctrl+Space hotkey-overlay-title="Run an Application: rofi menu launcher" { spawn-sh "~/.local/bin/rofi-menu"; }
     Mod+Ctrl+R hotkey-overlay-title="Reload waybar" { spawn-sh "~/.local/bin/restart-app waybar"; }
     Mod+P hotkey-overlay-title="Power menu" { spawn-sh "~/.local/bin/rofi-powermenu"; }
-    Mod+N { spawn-sh "~/.local/bin/nightlight-toggle niri"; }
-    Mod+Period { spawn "rofimoji"; }
+    Mod+N hotkey-overlay-title="Toggle nightlight" { spawn-sh "~/.local/bin/nightlight-toggle niri"; }
+    Mod+Period hotkey-overlay-title="Toggle emoji selector" { spawn "rofimoji"; }
     Mod+V { spawn-sh "cliphist list | rofi -dmenu | cliphist decode | wl-copy"; }
     Mod+M { spawn "tauon"; }
-	Mod+Alt+L { spawn-sh "swaylock -f"; }
+	Mod+Alt+L { spawn-sh "swaylock"; }
 	Mod+Ctrl+N { spawn-sh "kitty -e nvim"; }
 	Mod+I { spawn-sh "~/.local/bin/toggle-idle"; }
  
