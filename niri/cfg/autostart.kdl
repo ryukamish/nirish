@@ -1,8 +1,4 @@
-spawn-at-startup "swayidle" "-w" \
-    "timeout" "600" "swaylock -f" \
-    "timeout" "630" "niri msg action power-off-monitors" \
-    "resume" "niri msg action power-on-monitors" \
-    "before-sleep" "swaylock -f"
+spawn-sh-at-startup "systemctl --user start stasis"
 
 spawn-at-startup "awww-daemon"
 spawn-sh-at-startup "waybar"
