@@ -5,7 +5,7 @@ margin=10
 padding=10
 border-size=2
 border-radius=5
-default-timeout=5000
+default-timeout=3000
 ignore-timeout=0
 max-visible=3
 layer=overlay
@@ -14,7 +14,7 @@ anchor=top-right
 background-color=#000000
 
 [urgency=low]
-default-timeout=5000
+default-timeout=3000
 border-color=#808080
 
 [urgency=normal]
