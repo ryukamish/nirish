@@ -3,10 +3,15 @@
 power_args=$(printf '%b' ' Lock\nLogout\n Restart\n󰒲 Suspend\n󰋊 Hibernate\n󰚦 Shutdown' |
   rofi -dmenu -p "󰐥" -i -theme-str 'window {width: 12em; padding: 2px; height: 16em;}')
 
+_have_cmd() {
+  command -v "$1" &>/dev/null
+}
+
 case "$power_args" in
 *Lock)
   if [[ -n "$NIRI_SOCKET" ]]; then
-    command -v swaylock &>/dev/null && swaylock
+    niri msg action power-off-monitors
+    _have_cmd swaylock && swaylock
   elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
     hyprlock
   fi
