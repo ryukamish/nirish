@@ -13,7 +13,10 @@
 		"custom/screenrecording-indicator",
 		"tray",
 		"custom/brightness",
+		"cpu",
+		"temperature",
 		"network",
+		"custom/vpn",
 		"pulseaudio",
 		"bluetooth",
 		"battery"
@@ -25,6 +28,16 @@
 	"clock": {
 		"format": "{:%a, %b %d %H:%M}",
 		"tooltip": false
+	},
+	"cpu": {
+		"interval": 10,
+		"format": " {usage}%",
+		"max-length": 10
+	},
+	"temperature": {
+		"thermal-zone": 5,
+		"critical-threshold": 80,
+		"format": " {temperatureC}°C"
 	},
 	"battery": {
 		"states": {
@@ -89,6 +102,13 @@
 		"interval": 60,
 		"on-click": "$TERMINAL --app-id TUI.float -e wifitui",
 		"on-click-right": "rfkill toggle wlan"
+	},
+	"custom/vpn": {
+		"format": " VPN",
+		"exec": "echo '{\"class\": \"connected\"}'",
+		"exec-if": "test -d /proc/sys/net/ipv4/conf/proton0",
+		"return-type": "json",
+		"interval": 5
 	},
 	"custom/workspaces": {
 		"exec": "~/.config/waybar/niri-workspaces",
