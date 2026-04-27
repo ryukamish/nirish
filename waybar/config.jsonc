@@ -89,7 +89,7 @@
 		"scroll-step": 5
 	},
 	"network": {
-		"interface": "wlo1",
+		"interface": "wlan0",
 		"format": "{ifname}",
 		"format-wifi": " {signalStrength}%",
 		"format-ethernet": " {ipaddr}/{cidr}",
