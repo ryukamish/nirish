@@ -2,7 +2,7 @@
  *
  * Author : Aditya Shakya (adi1090x)
  * Github : @adi1090x
- * 
+ *
  * Rofi Theme File
  * Rofi Version: 1.7.3
  **/
@@ -20,36 +20,41 @@ configuration {
 }
 
 /*****----- Global Properties -----*****/
-@import                          "colors/tokyonight.rasi"
-
 * {
     font: "JetBrainsMono Nerd Font Propo 12";
 }
 
 * {
-    border-colour:               var(selected);
-    handle-colour:               var(selected);
-    background-colour:           var(background);
-    foreground-colour:           var(foreground);
-    alternate-background:        var(background-alt);
-    normal-background:           var(background);
-    normal-foreground:           var(foreground);
+    bg:     #0a0a0a;
+    bg-alt: #141414;
+    fg:     #b8a5e6;
+    sel:    #ff7645;
+    active: #b8a5e6;
+    urgent: #cc5533;
+
+    border-colour:               var(sel);
+    handle-colour:               var(sel);
+    background-colour:           var(bg);
+    foreground-colour:           var(fg);
+    alternate-background:        var(bg-alt);
+    normal-background:           var(bg);
+    normal-foreground:           var(fg);
     urgent-background:           var(urgent);
-    urgent-foreground:           var(background);
+    urgent-foreground:           var(bg);
     active-background:           var(active);
-    active-foreground:           var(background);
-    selected-normal-background:  var(selected);
-    selected-normal-foreground:  var(background);
+    active-foreground:           var(bg);
+    selected-normal-background:  var(sel);
+    selected-normal-foreground:  var(bg);
     selected-urgent-background:  var(active);
-    selected-urgent-foreground:  var(background);
+    selected-urgent-foreground:  var(bg);
     selected-active-background:  var(urgent);
-    selected-active-foreground:  var(background);
-    alternate-normal-background: var(background);
-    alternate-normal-foreground: var(foreground);
+    selected-active-foreground:  var(bg);
+    alternate-normal-background: var(bg);
+    alternate-normal-foreground: var(fg);
     alternate-urgent-background: var(urgent);
-    alternate-urgent-foreground: var(background);
+    alternate-urgent-foreground: var(bg);
     alternate-active-background: var(active);
-    alternate-active-foreground: var(background);
+    alternate-active-foreground: var(bg);
 }
 
 /*****----- Main Window -----*****/
@@ -134,7 +139,7 @@ listview {
     reverse:                     false;
     fixed-height:                true;
     fixed-columns:               true;
-    
+
     spacing:                     0px;
     margin:                      0px;
     padding:                     0px;
@@ -178,8 +183,8 @@ element normal.active {
     text-color:                  var(active-foreground);
 }
 element selected.normal {
-    background-color:            var(alternate-background);
-    text-color:                  var(foreground-colour);
+    background-color:            var(selected-normal-background);
+    text-color:                  var(selected-normal-foreground);
 }
 element selected.urgent {
     background-color:            var(selected-urgent-background);
