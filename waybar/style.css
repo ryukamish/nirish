@@ -1,14 +1,14 @@
 * {
 	border: none;
-	font-family: "JetBrainsMono Nerd Font Propo, monospace";
+	font-family: "Terminess Nerd Font Propo, monospace";
 	font-size: 14px;
 	/* font-weight: bold; */
 	min-height: 0;
 }
 
 window#waybar {
-	background-color: #000000;
-	color: #ffffff;
+	background-color: #0a0a0a;
+	color: #b8a9e9;
 }
 
 /* Different battery states indicator */
@@ -25,8 +25,11 @@ window#waybar {
 #window,
 #custom-brightness,
 #custom-uptime,
+#custom-vpn,
 #memory,
 #network,
+#temperature,
+#cpu,
 #mpris,
 #bluetooth,
 #pulseaudio,
@@ -39,10 +42,18 @@ window#waybar {
 #memory,
 #bluetooth,
 #pulseaudio,
+#temperature,
+#cpu,
 #custom-brightness,
 #custom-uptime,
+#custom-vpn,
 #battery {
-	color: #cccccc;
+	/* color: #cccccc; */
+	color: #9b8ec4;
+}
+
+#temperature.critical {
+	color: #ff0000;
 }
 
 /* custom modules */
