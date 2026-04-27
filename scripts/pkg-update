@@ -15,24 +15,24 @@ ERRORS=0
 
 # Function to print section headers
 print_header() {
-    echo -e "${BOLD}${BLUE}"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo -e "$1"
-    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-    echo -e "${RESET}"
+	echo -e "${BOLD}${BLUE}"
+	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	echo -e "$1"
+	echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+	echo -e "${RESET}"
 }
 
 print_success() {
-    echo -e "${GREEN}✓ $1${RESET}"
+	echo -e "${GREEN}✓ $1${RESET}"
 }
 
 print_error() {
-    echo -e "${RED}✗ $1${RESET}"
-    ERRORS=$((ERRORS + 1))
+	echo -e "${RED}✗ $1${RESET}"
+	ERRORS=$((ERRORS + 1))
 }
 
 print_info() {
-    echo -e "${YELLOW}ℹ $1${RESET}"
+	echo -e "${YELLOW}ℹ $1${RESET}"
 }
 
 # Main update process
@@ -41,9 +41,9 @@ print_header "System Package Update"
 # Update system packages
 echo -e "${GREEN}Updating system packages...${RESET}\n"
 if sudo pacman -Syu --noconfirm; then
-    print_success "System packages updated"
+	print_success "System packages updated"
 else
-    print_error "Failed to update system packages"
+	print_error "Failed to update system packages"
 fi
 
 echo
@@ -51,17 +51,19 @@ echo
 # Update AUR packages
 print_header "AUR Package Update"
 
-if ! command -v yay >/dev/null 2>&1; then
-    print_info "yay is not installed, skipping AUR updates"
+if ! command -v {yay,paru} >/dev/null 2>&1; then
+	print_info "Both yay and paru are not installed, skipping AUR updates"
 elif ! pacman -Qem >/dev/null 2>&1; then
-    print_info "No AUR packages installed, skipping AUR updates"
+	print_info "No AUR packages installed, skipping AUR updates"
 else
-    echo -e "${GREEN}Updating AUR packages...${RESET}\n"
-    if yay -Sua --noconfirm; then
-        print_success "AUR packages updated"
-    else
-        print_error "Failed to update some AUR packages"
-    fi
+	echo -e "${GREEN}Updating AUR packages...${RESET}\n"
+	if yay -Sua --noconfirm; then
+		print_success "AUR packages updated"
+	elif paru -Sua --noconfirm; then
+		print_success "AUR packages updated"
+	else
+		print_error "Failed to update some AUR packages"
+	fi
 fi
 
 echo
@@ -72,17 +74,17 @@ print_header "Cleanup Orphaned Packages"
 orphans=$(pacman -Qtdq 2>/dev/null || true)
 
 if [[ -z "$orphans" ]]; then
-    print_info "No orphaned packages found"
+	print_info "No orphaned packages found"
 else
-    echo -e "${YELLOW}Found orphaned packages:${RESET}"
-    echo "$orphans" | sed 's/^/  - /'
-    echo
-    echo -e "${GREEN}Removing orphaned packages...${RESET}\n"
-    if sudo pacman -Rns --noconfirm $orphans 2>/dev/null; then
-        print_success "Orphaned packages removed"
-    else
-        print_error "Failed to remove some orphaned packages"
-    fi
+	echo -e "${YELLOW}Found orphaned packages:${RESET}"
+	echo "$orphans" | sed 's/^/  - /'
+	echo
+	echo -e "${GREEN}Removing orphaned packages...${RESET}\n"
+	if sudo pacman -Rns --noconfirm "$orphans" 2>/dev/null; then
+		print_success "Orphaned packages removed"
+	else
+		print_error "Failed to remove some orphaned packages"
+	fi
 fi
 
 echo
@@ -91,17 +93,17 @@ echo
 print_header "Update Summary"
 
 if [[ $ERRORS -eq 0 ]]; then
-    echo -e "${GREEN}${BOLD}✓ All operations completed successfully!${RESET}"
+	echo -e "${GREEN}${BOLD}✓ All operations completed successfully!${RESET}"
 else
-    echo -e "${YELLOW}${BOLD} Completed with $ERRORS error(s)${RESET}"
+	echo -e "${YELLOW}${BOLD} Completed with $ERRORS error(s)${RESET}"
 fi
 
 echo
 
 # Keep window open until user dismisses
 if command -v gum >/dev/null 2>&1; then
-    gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
+	gum spin --spinner "globe" --title "Done! Press any key to close..." -- bash -c 'read -n 1 -s'
 else
-    echo -e "${BLUE}Press any key to close this window...${RESET}"
-    read -n 1 -s
+	echo -e "${BLUE}Press any key to close this window...${RESET}"
+	read -n 1 -s
 fi
