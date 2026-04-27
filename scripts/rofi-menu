@@ -35,7 +35,6 @@ case "$menu_args" in
 *Change\ Wallpaper)
 	~/.local/bin/niriwall
 	;;
-esac
 *Record\ Screen)
 	record_args=$(printf '%b' '󰍹 Display\n󰽟 Display + Audio\n󰖠 Webcam + Audio\n󰹑 Region\n󱄄 Region + Audio' | rofi -dmenu -p " Record: " -i -theme-str "window {width: 20em;}")
 	case "$record_args" in
