@@ -11,11 +11,13 @@ max-visible=3
 layer=overlay
 anchor=top-right
 
-background-color=#000000
+background-color=#0a0a0a
+progress-color=#f6764f
+text-color=#b8a9e9
+border-color=#9b8ec4
 
 [urgency=low]
 default-timeout=3000
-border-color=#808080
 
 [urgency=normal]
 default-timeout=10000
