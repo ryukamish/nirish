@@ -40,6 +40,8 @@
 		"format": " {temperatureC}°C"
 	},
 	"battery": {
+		"interval": 60,
+		"max-length": 25,
 		"states": {
 			"good": 95,
 			"warning": 30,

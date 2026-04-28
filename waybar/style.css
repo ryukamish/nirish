@@ -14,10 +14,16 @@ window#waybar {
 /* Different battery states indicator */
 #battery.discharging.warning {
 	color: #ffa500;
+	background-color: #0a0a0a;
 }
 
 #battery.discharging.critical {
 	color: #ff0000;
+	background-color: #0a0a0a;
+}
+
+#battery.charging {
+	background-color: #0a0a0a;
 }
 
 #clock,
