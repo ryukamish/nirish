@@ -13,10 +13,12 @@ window-rule {
 
 window-rule {
 	match app-id="zen"
-	match app-id="chromium"
+	match app-id="firefox"
+	match app-id="Chromium"
 	match app-id="google-chrome"
 	match app-id="brave-browser"
 	match app-id="librewolf"
+	match app-id="helium-browser"
 
 	open-maximized true
 }
