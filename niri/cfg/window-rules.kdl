@@ -49,7 +49,7 @@ window-rule {
 
 // Rounded cornors for all windows
 window-rule {
-    geometry-corner-radius 0
+    geometry-corner-radius 8
     clip-to-geometry true
 }
 
